@@ -1,0 +1,38 @@
+{
+  "nodes": {
+    "S0":  {"name": "greeting",             "terminal": false},
+    "S1":  {"name": "issue_identification", "terminal": false},
+    "S2":  {"name": "order_verification",   "terminal": false},
+    "S3":  {"name": "refund_eligibility",   "terminal": false},
+    "S4":  {"name": "evidence_collection",  "terminal": false},
+    "S5":  {"name": "evidence_review",      "terminal": false},
+    "S6":  {"name": "logistics_check",      "terminal": false},
+    "S7":  {"name": "solution_proposal",    "terminal": false},
+    "S8":  {"name": "user_confirmation",    "terminal": false},
+    "S9":  {"name": "execution",            "terminal": false},
+    "S10": {"name": "resolution",           "terminal": true},
+    "S11": {"name": "escalation",           "terminal": true}
+  },
+  "actions": {
+    "greet_and_ask":       {"from": ["S0"], "to": "S1"},
+    "clarify_issue":       {"from": ["S1"], "to": "S1", "max_uses": 2},
+    "ask_order_info":      {"from": ["S1"], "to": "S2"},
+    "query_order":         {"from": ["S2"], "branch_on": "issue_type",
+                            "to_map": {"refund": "S3", "return": "S4", "exchange": "S4", "logistics": "S6"}},
+    "check_refund_policy": {"from": ["S3"], "to": "S7"},
+    "request_evidence":    {"from": ["S4"], "to": "S5"},
+    "review_evidence":     {"from": ["S5"], "branch_on": "evidence_valid",
+                            "to_map": {"true": "S7", "false": "S11"}},
+    "query_logistics":     {"from": ["S6"], "to": "S7"},
+    "propose_solution":    {"from": ["S7"], "to": "S8"},
+    "revise_solution":     {"from": ["S8"], "to": "S7", "max_uses": 2},
+    "execute_action":      {"from": ["S8"], "to": "S9"},
+    "confirm_resolution":  {"from": ["S9"], "to": "S10"},
+    "comfort_user":        {"from": "any_nonterminal", "to": "self", "max_uses": 3},
+    "escalate":            {"from": "any_nonterminal", "to": "S11"},
+    "end_session":         {"from": ["S10", "S11"], "to": "self"}
+  },
+  "rules": {
+    "coupon_max_ratio": 0.2
+  }
+}

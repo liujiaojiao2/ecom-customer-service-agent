@@ -1,6 +1,23 @@
+# secrets
+.env
+
+# python
 .venv/
 __pycache__/
-*.log
 *.pyc
+*.pyo
+.pytest_cache/
 .ipynb_checkpoints/
-.env
+*.log
+
+# editor / tooling
+.claude/
+.DS_Store
+
+# large data & experiment outputs (excluded from initial core-code push)
+data/
+runs/
+
+# personal / non-core docs
+面试准备_LLM与Agent知识主线.md
+*.docx
